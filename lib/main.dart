@@ -14,7 +14,11 @@ class MyApp extends StatelessWidget {
       title: 'Shop do John',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme:
+            ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple).copyWith(
+          secondary: Colors.deepOrange,
+        ),
+        fontFamily: 'Lato',
       ),
       home: ProductsOverviewPage(),
     );
