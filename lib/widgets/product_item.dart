@@ -13,7 +13,7 @@ class ProductItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: GridTile(
           footer: GridTileBar(
-            title: Text(product.title),
+            title: Text(product.name),
             backgroundColor: Colors.black87,
             leading: IconButton(
               icon: Icon(
