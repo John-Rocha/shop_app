@@ -12,6 +12,7 @@ class ProductsOverviewPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: const ProductGrid(),
+      backgroundColor: Theme.of(context).colorScheme.background,
     );
   }
 }

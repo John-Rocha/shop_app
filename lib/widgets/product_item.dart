@@ -8,37 +8,38 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: GridTile(
-        footer: GridTileBar(
-          title: Text(product.title),
-          backgroundColor: Colors.black87,
-          leading: IconButton(
-            icon: Icon(
-              product.isFavorite ? Icons.favorite : Icons.favorite_border,
+    return Consumer<Product>(
+      builder: (context, product, _) => ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: GridTile(
+          footer: GridTileBar(
+            title: Text(product.title),
+            backgroundColor: Colors.black87,
+            leading: IconButton(
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+              ),
+              color: Theme.of(context).colorScheme.secondary,
+              onPressed: () => product.toggleFavorite(),
             ),
-            color: Theme.of(context).colorScheme.secondary,
-            onPressed: () => product.toggleFavorite(),
+            trailing: IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              color: Theme.of(context).colorScheme.secondary,
+              onPressed: () {},
+            ),
           ),
-          trailing: IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            color: Theme.of(context).colorScheme.secondary,
-            onPressed: () {},
+          child: GestureDetector(
+            child: Image.network(
+              product.imageUrl,
+              fit: BoxFit.cover,
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                AppRoutes.kProductDetail,
+                arguments: product,
+              );
+            },
           ),
-        ),
-        child: GestureDetector(
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-          ),
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              AppRoutes.kProductDetail,
-              arguments: product,
-            );
-          },
         ),
       ),
     );

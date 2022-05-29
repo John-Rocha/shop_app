@@ -20,8 +20,12 @@ class MyApp extends StatelessWidget {
         title: 'Shop do John',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme:
-              ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple).copyWith(
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.purple,
+            accentColor: Colors.purpleAccent,
+            primaryColorDark: const Color(0XFFc0b3c2),
+            backgroundColor: const Color(0xFFf3e5f5),
+          ).copyWith(
             secondary: Colors.deepOrange,
           ),
           fontFamily: 'Lato',
@@ -29,7 +33,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AppRoutes.kProductDetail: (context) => const ProductDetailPage(),
         },
-        home: ProductsOverviewPage(),
+        home: const ProductsOverviewPage(),
       ),
     );
   }
