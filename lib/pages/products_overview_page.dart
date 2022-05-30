@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/product_provider.dart';
 import 'package:shop_app/utils/app_routes.dart';
+import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/cart_badge.dart';
 import 'package:shop_app/widgets/product_grid.dart';
 
@@ -37,6 +38,7 @@ class ProductsOverviewPage extends StatelessWidget {
       ),
       body: const ProductGrid(),
       backgroundColor: Theme.of(context).colorScheme.background,
+      drawer: const AppDrawer(),
     );
   }
 }

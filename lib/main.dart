@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/firebase_options.dart';
 import 'package:shop_app/pages/cart_page.dart';
+import 'package:shop_app/pages/orders_page.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/pages/product_detail_page.dart';
 import 'package:shop_app/pages/products_overview_page.dart';
@@ -52,8 +53,10 @@ class MyApp extends StatelessWidget {
         routes: {
           AppRoutes.kProductDetail: (context) => const ProductDetailPage(),
           AppRoutes.kCartPage: (context) => const CartPage(),
+          AppRoutes.kHome: (context) => const ProductsOverviewPage(),
+          AppRoutes.kOrders: (context) => const OrdersPage(),
         },
-        home: const ProductsOverviewPage(),
+        // home: const ProductsOverviewPage(),
       ),
     );
   }

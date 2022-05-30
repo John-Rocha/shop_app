@@ -1,12 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 
 class OrderProvider with ChangeNotifier {
-  List<Order> _items = [];
+  final List<Order> _items = [];
 
   List<Order> get items {
     return [..._items];
