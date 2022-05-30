@@ -11,7 +11,7 @@ class CartProvider with ChangeNotifier {
     return {..._items};
   }
 
-  int get itemCount => _items.length;
+  int get itemsCount => _items.length;
 
   double get totalAmount {
     double total = 0;
