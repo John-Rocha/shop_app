@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/models/product.dart';
 
@@ -11,10 +11,12 @@ class CartProvider with ChangeNotifier {
     return {..._items};
   }
 
-  int get itemsCount => _items.length;
+  int get itemsCount {
+    return _items.length;
+  }
 
   double get totalAmount {
-    double total = 0;
+    double total = 0.0;
     _items.forEach((key, cartItem) {
       total += cartItem.price * cartItem.quantity;
     });
@@ -29,7 +31,7 @@ class CartProvider with ChangeNotifier {
           id: existingItem.id,
           productId: existingItem.productId,
           name: existingItem.name,
-          quantity: existingItem.quantity,
+          quantity: existingItem.quantity + 1,
           price: existingItem.price,
         ),
       );

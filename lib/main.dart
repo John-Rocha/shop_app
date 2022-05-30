@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'Shop do John',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          primaryColor: Colors.purple,
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.purple,
             accentColor: Colors.purpleAccent,
