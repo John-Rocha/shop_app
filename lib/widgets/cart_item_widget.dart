@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/models/cart.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 
 class CartItemWidget extends StatelessWidget {
   const CartItemWidget({
@@ -11,24 +13,48 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4,
+    return Dismissible(
+      key: ValueKey(cart.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Theme.of(context).errorColor,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        margin: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
+        ),
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 40,
+        ),
       ),
-      child: ListTile(
-        leading: CircleAvatar(
-            backgroundColor: Theme.of(context).primaryColor,
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: FittedBox(
-                child: Text('${cart.price}'),
-              ),
-            )),
-        title: Text(cart.name),
-        subtitle: Text(
-            'Total: R\$ ${(cart.price * cart.quantity).toStringAsFixed(2)}'),
-        trailing: Text('${cart.quantity}x'),
+      onDismissed: (_) {
+        Provider.of<CartProvider>(
+          context,
+          listen: false,
+        ).removeItem(cart.productId);
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
+        ),
+        child: ListTile(
+          leading: CircleAvatar(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: FittedBox(
+                  child: Text('${cart.price}'),
+                ),
+              )),
+          title: Text(cart.name),
+          subtitle: Text(
+              'Total: R\$ ${(cart.price * cart.quantity).toStringAsFixed(2)}'),
+          trailing: Text('${cart.quantity}x'),
+        ),
       ),
     );
   }
