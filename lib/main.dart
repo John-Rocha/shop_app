@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Lato',
         ),
+        initialRoute: AppRoutes.kHome,
         routes: {
           AppRoutes.kProductDetail: (context) => const ProductDetailPage(),
           AppRoutes.kCartPage: (context) => const CartPage(),
