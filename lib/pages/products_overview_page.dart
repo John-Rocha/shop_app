@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/product_provider.dart';
+import 'package:shop_app/utils/app_routes.dart';
 import 'package:shop_app/widgets/cart_badge.dart';
 import 'package:shop_app/widgets/product_grid.dart';
 
@@ -22,7 +23,9 @@ class ProductsOverviewPage extends StatelessWidget {
           _menu(context, product),
           Consumer<CartProvider>(
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.kCartPage);
+              },
               icon: const Icon(Icons.shopping_cart),
             ),
             builder: (context, cartItem, child) => CartBadge(
