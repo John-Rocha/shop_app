@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/product.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/utils/app_routes.dart';
 
 class ProductItem extends StatelessWidget {
@@ -8,38 +9,42 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Product>(
-      builder: (context, product, _) => ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: GridTile(
-          footer: GridTileBar(
-            title: Text(product.name),
-            backgroundColor: Colors.black87,
-            leading: IconButton(
-              icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border,
-              ),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () => product.toggleFavorite(),
+    final product = Provider.of<Product>(context);
+    final cart = Provider.of<CartProvider>(context);
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: GridTile(
+        footer: GridTileBar(
+          title: Text(product.name),
+          backgroundColor: Colors.black87,
+          leading: IconButton(
+            icon: Icon(
+              product.isFavorite ? Icons.favorite : Icons.favorite_border,
             ),
-            trailing: IconButton(
-              icon: const Icon(Icons.shopping_cart),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () {},
-            ),
+            color: Theme.of(context).colorScheme.secondary,
+            onPressed: () => product.toggleFavorite(),
           ),
-          child: GestureDetector(
-            child: Image.network(
-              product.imageUrl,
-              fit: BoxFit.cover,
-            ),
-            onTap: () {
-              Navigator.of(context).pushNamed(
-                AppRoutes.kProductDetail,
-                arguments: product,
-              );
+          trailing: IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            color: Theme.of(context).colorScheme.secondary,
+            onPressed: () {
+              cart.addItem(product);
+              print(cart.itemsCount);
             },
           ),
+        ),
+        child: GestureDetector(
+          child: Image.network(
+            product.imageUrl,
+            fit: BoxFit.cover,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              AppRoutes.kProductDetail,
+              arguments: product,
+            );
+          },
         ),
       ),
     );
