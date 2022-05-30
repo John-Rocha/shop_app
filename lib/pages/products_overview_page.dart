@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/product_provider.dart';
+import 'package:shop_app/widgets/cart_badge.dart';
 import 'package:shop_app/widgets/product_grid.dart';
 
 enum FilterOptions { favorite, all }
@@ -10,13 +12,24 @@ class ProductsOverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProductProvider>(context);
+    final product = Provider.of<ProductProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Minha Loja'),
         centerTitle: true,
         actions: [
-          _menu(context, provider),
+          _menu(context, product),
+          Consumer<CartProvider>(
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.shopping_cart),
+            ),
+            builder: (context, cartItem, child) => CartBadge(
+              value: cartItem.itemsCount.toString(),
+              child: child!,
+            ),
+          )
         ],
       ),
       body: const ProductGrid(),
