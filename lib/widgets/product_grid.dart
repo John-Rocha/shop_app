@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/providers/product_provider.dart';
-import 'package:shop_app/widgets/product_item.dart';
+import 'package:shop_app/widgets/product_grid_item.dart';
 
 class ProductGrid extends StatelessWidget {
   const ProductGrid({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class ProductGrid extends StatelessWidget {
       ),
       itemBuilder: (conext, index) => ChangeNotifierProvider.value(
         value: loadedProdutcs[index],
-        child: const ProductItem(),
+        child: const ProductGridItem(),
       ),
     );
   }
