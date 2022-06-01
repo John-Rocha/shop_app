@@ -4,4 +4,5 @@ class AppRoutes {
   static const kCartPage = '/cart-page';
   static const kOrders = '/orders';
   static const kProducts = '/products';
+  static const kProductForm = '/product-form';
 }

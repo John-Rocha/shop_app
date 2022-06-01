@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/firebase_options.dart';
 import 'package:shop_app/pages/cart_page.dart';
 import 'package:shop_app/pages/orders_page.dart';
+import 'package:shop_app/pages/product_form_page.dart';
 import 'package:shop_app/pages/products_page.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/pages/product_detail_page.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.kHome: (context) => const ProductsOverviewPage(),
           AppRoutes.kOrders: (context) => const OrdersPage(),
           AppRoutes.kProducts: (context) => const ProductsPage(),
+          AppRoutes.kProductForm: (context) => const ProductFormPage(),
         },
         // home: const ProductsOverviewPage(),
       ),
