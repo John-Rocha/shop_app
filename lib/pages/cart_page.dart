@@ -16,6 +16,7 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Carrinho'),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
           Card(

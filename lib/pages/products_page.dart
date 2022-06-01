@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/models/product.dart';
 import 'package:shop_app/providers/product_provider.dart';
 import 'package:shop_app/widgets/app_drawer.dart';
+import 'package:shop_app/widgets/product_item.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({Key? key}) : super(key: key);
@@ -13,12 +15,18 @@ class ProductsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Gerenciar produtos'),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
           itemCount: products.itemsCount,
-          itemBuilder: (context, index) => Text(products.items[index].name),
+          itemBuilder: (context, index) => Column(
+            children: [
+              ProductItem(product: products.items[index]),
+              const Divider(),
+            ],
+          ),
         ),
       ),
     );

@@ -14,6 +14,7 @@ class OrdersPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Meus Pedidos'),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const AppDrawer(),
       body: ListView.builder(
         itemCount: orders.itemsCount,
