@@ -35,16 +35,16 @@ class CartItemWidget extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Tem Certeza?'),
-              content: Text('Quer remover o item do carrinho?'),
+              title: const Text('Tem Certeza?'),
+              content: const Text('Quer remover o item do carrinho?'),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('Não'),
+                  child: const Text('Não'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Sim'),
+                  child: const Text('Sim'),
                 ),
               ],
             );
