@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shop_app/data/dummy_data.dart';
 import 'package:shop_app/models/product.dart';
+import 'package:shop_app/pages/products_overview_page.dart';
 
 class ProductProvider with ChangeNotifier {
   final List<Product> _items = dummyProductus;
@@ -67,5 +68,29 @@ class ProductProvider with ChangeNotifier {
   void showAll() {
     _showFavoriteOnly = false;
     notifyListeners();
+  }
+
+  Widget menu(BuildContext context, ProductProvider provider) {
+    return PopupMenuButton(
+      icon: const Icon(Icons.more_horiz_outlined),
+      color: Theme.of(context).colorScheme.background,
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: FilterOptions.favorite,
+          child: Text('Somente Favoritas'),
+        ),
+        const PopupMenuItem(
+          value: FilterOptions.all,
+          child: Text('Todos'),
+        ),
+      ],
+      onSelected: (FilterOptions selectedValue) {
+        if (selectedValue == FilterOptions.favorite) {
+          provider.showFavoriteOnly();
+        } else {
+          provider.showAll();
+        }
+      },
+    );
   }
 }

@@ -21,7 +21,7 @@ class ProductsOverviewPage extends StatelessWidget {
         title: const Text('Minha Loja'),
         centerTitle: true,
         actions: [
-          _menu(context, product),
+          Provider.of<ProductProvider>(context).menu(context, product),
           Consumer<CartProvider>(
             child: IconButton(
               onPressed: () {
@@ -41,28 +41,4 @@ class ProductsOverviewPage extends StatelessWidget {
       drawer: const AppDrawer(),
     );
   }
-}
-
-Widget _menu(BuildContext context, ProductProvider provider) {
-  return PopupMenuButton(
-    icon: const Icon(Icons.more_horiz_outlined),
-    color: Theme.of(context).colorScheme.background,
-    itemBuilder: (context) => [
-      const PopupMenuItem(
-        value: FilterOptions.favorite,
-        child: Text('Somente Favoritas'),
-      ),
-      const PopupMenuItem(
-        value: FilterOptions.all,
-        child: Text('Todos'),
-      ),
-    ],
-    onSelected: (FilterOptions selectedValue) {
-      if (selectedValue == FilterOptions.favorite) {
-        provider.showFavoriteOnly();
-      } else {
-        provider.showAll();
-      }
-    },
-  );
 }
