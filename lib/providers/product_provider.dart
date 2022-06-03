@@ -50,6 +50,15 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
+  void removeProduct(Product product) {
+    int index = _items.indexWhere((prod) => prod.id == product.id);
+
+    if (index >= 0) {
+      _items.removeWhere((prod) => prod.id == product.id);
+      notifyListeners();
+    }
+  }
+
   void showFavoriteOnly() {
     _showFavoriteOnly = true;
     notifyListeners();

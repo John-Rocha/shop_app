@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/product.dart';
@@ -65,13 +63,15 @@ class _ProductFormPageState extends State<ProductFormPage> {
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
 
-    _formKey.currentState?.save();
+    if (isValid) {
+      _formKey.currentState?.save();
 
-    Provider.of<ProductProvider>(
-      context,
-      listen: false,
-    ).saveProduct(_formData);
-    Navigator.of(context).pop();
+      Provider.of<ProductProvider>(
+        context,
+        listen: false,
+      ).saveProduct(_formData);
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -113,7 +113,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 },
               ),
               TextFormField(
-                initialValue: _formData['price'].toString(),
+                initialValue: _formData['price'],
                 decoration: const InputDecoration(labelText: 'Preço'),
                 textInputAction: TextInputAction.next,
                 keyboardType: const TextInputType.numberWithOptions(
