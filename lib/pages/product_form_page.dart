@@ -63,15 +63,18 @@ class _ProductFormPageState extends State<ProductFormPage> {
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
 
-    if (isValid) {
-      _formKey.currentState?.save();
-
-      Provider.of<ProductProvider>(
-        context,
-        listen: false,
-      ).saveProduct(_formData);
-      Navigator.of(context).pop();
+    if (!isValid) {
+      return;
     }
+
+    _formKey.currentState?.save();
+
+    Provider.of<ProductProvider>(
+      context,
+      listen: false,
+    ).saveProduct(_formData);
+
+    Navigator.of(context).pop();
   }
 
   @override
@@ -191,12 +194,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     alignment: Alignment.center,
                     child: _imageEC.text.isEmpty
                         ? const Text('Informe a URL')
-                        : FittedBox(
-                            child: Image.network(
-                              _imageEC.text,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        : Image.network(_imageEC.text, fit: BoxFit.cover),
                   ),
                 ],
               ),

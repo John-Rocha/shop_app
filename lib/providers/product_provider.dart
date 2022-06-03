@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shop_app/data/dummy_data.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/pages/products_overview_page.dart';
+import 'package:shop_app/utils/app_routes.dart';
 
 class ProductProvider with ChangeNotifier {
   final List<Product> _items = dummyProductus;
@@ -38,6 +41,21 @@ class ProductProvider with ChangeNotifier {
   }
 
   void addProduct(Product product) {
+    http
+        .post(
+          Uri.parse('${AppRoutes.kBaseUrl}/products.json'),
+          body: jsonEncode(
+            {
+              'name': product.name,
+              'price': product.price,
+              'description': product.description,
+              'imageUrl': product.imageUrl,
+              'isFavorite': product.isFavorite,
+            },
+          ),
+        )
+        .then((value) {});
+
     _items.add(product);
     notifyListeners();
   }
