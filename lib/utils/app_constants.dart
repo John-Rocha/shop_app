@@ -9,4 +9,6 @@ class AppConstants {
   // Url Firebase
   static const kBaseUrl =
       'https://shop-app-john-default-rtdb.firebaseio.com/products';
+  static const kOrderBaseUrl =
+      'https://shop-app-john-default-rtdb.firebaseio.com/orders';
 }

@@ -47,25 +47,7 @@ class CartPage extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      Provider.of<OrderProvider>(
-                        context,
-                        listen: false,
-                      ).addOrder(cart);
-
-                      cart.clear();
-
-                      Navigator.pop(context);
-                    },
-                    style: TextButton.styleFrom(
-                      textStyle:
-                          TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                    child: const Text(
-                      'COMPRAR',
-                    ),
-                  )
+                  _CartButton(cart: cart)
                 ],
               ),
             ),
@@ -80,5 +62,47 @@ class CartPage extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _CartButton extends StatefulWidget {
+  const _CartButton({
+    Key? key,
+    required this.cart,
+  }) : super(key: key);
+
+  final CartProvider cart;
+
+  @override
+  State<_CartButton> createState() => _CartButtonState();
+}
+
+class _CartButtonState extends State<_CartButton> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? const CircularProgressIndicator()
+        : TextButton(
+            onPressed: widget.cart.itemsCount == 0
+                ? null
+                : () async {
+                    setState(() => _isLoading = true);
+                    await Provider.of<OrderProvider>(
+                      context,
+                      listen: false,
+                    ).addOrder(widget.cart);
+
+                    widget.cart.clear();
+                    setState(() => _isLoading = false);
+                  },
+            style: TextButton.styleFrom(
+              textStyle: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            child: const Text(
+              'COMPRAR',
+            ),
+          );
   }
 }
