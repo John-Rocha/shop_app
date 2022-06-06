@@ -4,28 +4,11 @@ import 'package:shop_app/providers/order_provider.dart';
 import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/order_widget.dart';
 
-class OrdersPage extends StatefulWidget {
+class OrdersPage extends StatelessWidget {
   const OrdersPage({Key? key}) : super(key: key);
 
-  @override
-  State<OrdersPage> createState() => _OrdersPageState();
-}
-
-class _OrdersPageState extends State<OrdersPage> {
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<OrderProvider>(context, listen: false)
-        .loadOrders()
-        .then((value) {
-      setState(() => _isLoading = false);
-    });
-  }
-
-  Future<void> _refreshOrders(BuildContext context) {
-    return Provider.of<OrderProvider>(
+  Future<void> _refreshOrders(BuildContext context) async {
+    Provider.of<OrderProvider>(
       context,
       listen: false,
     ).loadOrders();
@@ -33,25 +16,36 @@ class _OrdersPageState extends State<OrdersPage> {
 
   @override
   Widget build(BuildContext context) {
-    final OrderProvider orders = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meus Pedidos'),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const AppDrawer(),
-      body: _isLoading
-          ? const Center(
+      body: FutureBuilder(
+        future: Provider.of<OrderProvider>(
+          context,
+          listen: false,
+        ).loadOrders(),
+        builder: (context, AsyncSnapshot<Object?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
               child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator(
-              onRefresh: () => _refreshOrders(context),
-              child: ListView.builder(
-                itemCount: orders.itemsCount,
-                itemBuilder: (context, index) =>
-                    OrderWidget(order: orders.items[index]),
+            );
+          } else {
+            return Consumer<OrderProvider>(
+              builder: (context, orders, _) => RefreshIndicator(
+                onRefresh: () => _refreshOrders(context),
+                child: ListView.builder(
+                  itemCount: orders.itemsCount,
+                  itemBuilder: (context, index) =>
+                      OrderWidget(order: orders.items[index]),
+                ),
               ),
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }

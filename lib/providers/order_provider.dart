@@ -6,7 +6,6 @@ import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/utils/app_constants.dart';
-import 'package:shop_app/widgets/cart_item_widget.dart';
 
 class OrderProvider with ChangeNotifier {
   final List<Order> _items = [];
