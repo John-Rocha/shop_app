@@ -7,5 +7,6 @@ class AppRoutes {
   static const kProductForm = '/product-form';
 
   // Url Firebase
-  static const kBaseUrl = 'https://shop-app-john-default-rtdb.firebaseio.com';
+  static const kUrl =
+      'https://shop-app-john-default-rtdb.firebaseio.com/products.json';
 }

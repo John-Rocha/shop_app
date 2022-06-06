@@ -3,13 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_app/data/dummy_data.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/pages/products_overview_page.dart';
 import 'package:shop_app/utils/app_routes.dart';
 
 class ProductProvider with ChangeNotifier {
-  final List<Product> _items = dummyProductus;
+  final List<Product> _items = [];
   bool _showFavoriteOnly = false;
 
   List<Product> get items {
@@ -21,6 +20,26 @@ class ProductProvider with ChangeNotifier {
 
   int get itemsCount {
     return _items.length;
+  }
+
+  Future<void> loadProducts() async {
+    _items.clear();
+    final response = await http.get(Uri.parse(AppRoutes.kUrl));
+    if (response.body == 'null') return;
+    Map<String, dynamic> data = jsonDecode(response.body);
+    data.forEach((productId, productData) {
+      _items.add(
+        Product(
+          id: productId,
+          name: productData['name'],
+          description: productData['description'],
+          price: productData['price'],
+          imageUrl: productData['imageUrl'],
+          isFavorite: productData['isFavorite'],
+        ),
+      );
+    });
+    notifyListeners();
   }
 
   Future<void> saveProduct(Map<String, dynamic> data) async {
@@ -42,7 +61,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse('${AppRoutes.kBaseUrl}/products.json'),
+      Uri.parse(AppRoutes.kUrl),
       body: jsonEncode(
         {
           'name': product.name,
