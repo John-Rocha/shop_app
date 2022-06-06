@@ -32,6 +32,13 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
     });
   }
 
+  Future<void> _refreshProducts(BuildContext context) {
+    return Provider.of<ProductProvider>(
+      context,
+      listen: false,
+    ).loadProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<ProductProvider>(context);
@@ -60,7 +67,10 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : const ProductGrid(),
+          : RefreshIndicator(
+              onRefresh: () => _refreshProducts(context),
+              child: const ProductGrid(),
+            ),
       backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const AppDrawer(),
     );
