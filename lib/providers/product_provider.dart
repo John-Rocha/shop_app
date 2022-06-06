@@ -24,7 +24,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> loadProducts() async {
     _items.clear();
-    final response = await http.get(Uri.parse(AppRoutes.kUrl));
+    final response = await http.get(Uri.parse('${AppConstants.kBaseUrl}.json'));
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach((productId, productData) {
@@ -61,7 +61,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse(AppRoutes.kUrl),
+      Uri.parse('${AppConstants.kBaseUrl}.json'),
       body: jsonEncode(
         {
           'name': product.name,
@@ -88,6 +88,17 @@ class ProductProvider with ChangeNotifier {
     int index = _items.indexWhere((prod) => prod.id == product.id);
 
     if (index >= 0) {
+      await http.patch(
+        Uri.parse('${AppConstants.kBaseUrl}/${product.id}.json'),
+        body: jsonEncode(
+          {
+            'name': product.name,
+            'price': product.price,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+          },
+        ),
+      );
       _items[index] = product;
       notifyListeners();
     }
@@ -95,12 +106,22 @@ class ProductProvider with ChangeNotifier {
     return Future.value();
   }
 
-  void removeProduct(Product product) {
+  Future<void> removeProduct(Product product) async {
     int index = _items.indexWhere((prod) => prod.id == product.id);
 
     if (index >= 0) {
-      _items.removeWhere((prod) => prod.id == product.id);
+      final product = _items[index];
+      _items.remove(product);
       notifyListeners();
+
+      final response = await http.delete(
+        Uri.parse('${AppConstants.kBaseUrl}/${product.id}.json'),
+      );
+
+      if (response.statusCode >= 400) {
+        _items.insert(index, product);
+        notifyListeners();
+      }
     }
   }
 

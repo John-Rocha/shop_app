@@ -19,7 +19,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Loja'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(
-                AppRoutes.kHome,
+                AppConstants.kHome,
               );
             },
           ),
@@ -29,7 +29,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Pedidos'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(
-                AppRoutes.kOrders,
+                AppConstants.kOrders,
               );
             },
           ),
@@ -39,7 +39,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Gerenciador de Produtos'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(
-                AppRoutes.kProducts,
+                AppConstants.kProducts,
               );
             },
           ),
