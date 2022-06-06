@@ -3,9 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/exceptions/http_exception.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/pages/products_overview_page.dart';
-import 'package:shop_app/utils/app_routes.dart';
+import 'package:shop_app/utils/app_constants.dart';
 
 class ProductProvider with ChangeNotifier {
   final List<Product> _items = [];
@@ -121,6 +122,10 @@ class ProductProvider with ChangeNotifier {
       if (response.statusCode >= 400) {
         _items.insert(index, product);
         notifyListeners();
+        throw HttpException(
+          message: 'Não foi possível excluir o produto',
+          statusCode: response.statusCode,
+        );
       }
     }
   }

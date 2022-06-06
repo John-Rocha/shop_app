@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/providers/cart_provider.dart';
-import 'package:shop_app/utils/app_routes.dart';
+import 'package:shop_app/utils/app_constants.dart';
 
 class ProductGridItem extends StatelessWidget {
   const ProductGridItem({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class ProductGridItem extends StatelessWidget {
               product.isFavorite ? Icons.favorite : Icons.favorite_border,
             ),
             color: Theme.of(context).colorScheme.secondary,
-            onPressed: () => product.toggleFavorite(),
+            onPressed: () => product.toggleFavoriteInFirebase(),
           ),
           trailing: IconButton(
             icon: const Icon(Icons.shopping_cart),
