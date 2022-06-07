@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/exceptions/auth_exception.dart';
 import 'package:shop_app/remote_config/custom_remote_config.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -24,14 +25,21 @@ class AuthProvider with ChangeNotifier {
         "returnSecureToken": true,
       }),
     );
-    print(jsonDecode(response.body));
+
+    final body = jsonDecode(response.body);
+
+    if (body['error'] != null) {
+      throw AuthException(body['error']['message']);
+    } else {}
+
+    print(body);
   }
 
   Future<void> signup(String email, String password) async {
-    _authenticate(email, password, 'signUp');
+    return _authenticate(email, password, 'signUp');
   }
 
   Future<void> login(String email, String password) async {
-    _authenticate(email, password, 'signInWithPassword');
+    return _authenticate(email, password, 'signInWithPassword');
   }
 }
