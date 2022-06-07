@@ -9,8 +9,11 @@ import 'package:shop_app/pages/products_overview_page.dart';
 import 'package:shop_app/utils/app_constants.dart';
 
 class ProductProvider with ChangeNotifier {
-  final List<Product> _items = [];
+  String _token;
+  List<Product> _items = [];
   bool _showFavoriteOnly = false;
+
+  ProductProvider(this._token, this._items);
 
   List<Product> get items {
     if (_showFavoriteOnly) {
@@ -25,7 +28,8 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> loadProducts() async {
     _items.clear();
-    final response = await http.get(Uri.parse('${AppConstants.kBaseUrl}.json'));
+    final response =
+        await http.get(Uri.parse('${AppConstants.kBaseUrl}.json?auth=$_token'));
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach((productId, productData) {
