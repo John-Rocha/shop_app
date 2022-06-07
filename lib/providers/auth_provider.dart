@@ -7,7 +7,27 @@ import 'package:shop_app/exceptions/auth_exception.dart';
 import 'package:shop_app/remote_config/custom_remote_config.dart';
 
 class AuthProvider with ChangeNotifier {
-  final dynamic token = FirebaseRemoteConfig.instance.getString('token');
+  String? _token;
+  String? _email;
+  String? _uid;
+  DateTime? _expiryDate;
+
+  bool get isAuth {
+    final isValid = _expiryDate?.isAfter(DateTime.now()) ?? false;
+    return _token != null && isValid;
+  }
+
+  String? get token {
+    return isAuth ? _token : null;
+  }
+
+  String? get email {
+    return isAuth ? _email : null;
+  }
+
+  String? get uid {
+    return isAuth ? _uid : null;
+  }
 
   Future<void> _authenticate(
     String email,
@@ -15,8 +35,10 @@ class AuthProvider with ChangeNotifier {
     String urlFragment,
   ) async {
     CustomRemoteConfig().forceFetch();
+    final dynamic tokenRemoteConfig =
+        FirebaseRemoteConfig.instance.getString('token');
     final url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$urlFragment?key=$token';
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlFragment?key=$tokenRemoteConfig';
     final response = await http.post(
       Uri.parse(url),
       body: jsonEncode({
@@ -30,9 +52,16 @@ class AuthProvider with ChangeNotifier {
 
     if (body['error'] != null) {
       throw AuthException(body['error']['message']);
-    } else {}
+    } else {
+      _token = body['idToken'];
+      _email = body['email'];
+      _uid = body['localId'];
 
-    print(body);
+      _expiryDate = DateTime.now().add(
+        Duration(seconds: int.parse(body['expiresIn'])),
+      );
+      notifyListeners();
+    }
   }
 
   Future<void> signup(String email, String password) async {
