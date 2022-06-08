@@ -1,14 +1,20 @@
+// ignore_for_file: prefer_final_fields, unused_field
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/utils/app_constants.dart';
 
 class OrderProvider with ChangeNotifier {
-  final List<Order> _items = [];
+  final String _token;
+  List<Order> _items = [];
+
+  OrderProvider(this._token, this._items);
 
   List<Order> get items {
     return [..._items];
@@ -19,13 +25,17 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<void> loadOrders() async {
-    _items.clear();
-    final response =
-        await http.get(Uri.parse('${AppConstants.kOrderBaseUrl}.json'));
+    List<Order> items = [];
+
+    final response = await http.get(
+      Uri.parse(
+        '${AppConstants.kOrderBaseUrl}.json?auth=$_token',
+      ),
+    );
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach((orderId, orderData) {
-      _items.add(
+      items.add(
         Order(
           id: orderId,
           date: DateTime.parse(orderData['date']),
@@ -42,13 +52,15 @@ class OrderProvider with ChangeNotifier {
         ),
       );
     });
+
+    _items = items.reversed.toList();
     notifyListeners();
   }
 
   Future<void> addOrder(CartProvider cart) async {
     final date = DateTime.now();
     final response = await http.post(
-      Uri.parse('${AppConstants.kOrderBaseUrl}.json'),
+      Uri.parse('${AppConstants.kOrderBaseUrl}.json?auth=$_token'),
       body: jsonEncode(
         {
           'total': cart.totalAmount,

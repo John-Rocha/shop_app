@@ -26,10 +26,12 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteInFirebase() async {
+  Future<void> toggleFavoriteInFirebase(String token) async {
     _toggleFavorite();
     final response = await http.patch(
-      Uri.parse('${AppConstants.kBaseUrl}/$id.json'),
+      Uri.parse(
+        '${AppConstants.kBaseUrl}/$id.json?auth=$token',
+      ),
       body: jsonEncode({"isFavorite": isFavorite}),
     );
 

@@ -38,11 +38,17 @@ class MyApp extends StatelessWidget {
             );
           },
         ),
-        ChangeNotifierProvider(
-          create: (context) => CartProvider(),
+        ChangeNotifierProxyProvider<AuthProvider, OrderProvider>(
+          create: (context) => OrderProvider('', []),
+          update: (context, auth, previous) {
+            return OrderProvider(
+              auth.token ?? '',
+              previous?.items ?? [],
+            );
+          },
         ),
         ChangeNotifierProvider(
-          create: (context) => OrderProvider(),
+          create: (context) => CartProvider(),
         ),
       ],
       child: MaterialApp(

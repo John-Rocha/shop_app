@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'dart:convert';
 import 'dart:math';
 
@@ -9,7 +11,7 @@ import 'package:shop_app/pages/products_overview_page.dart';
 import 'package:shop_app/utils/app_constants.dart';
 
 class ProductProvider with ChangeNotifier {
-  String _token;
+  final String _token;
   List<Product> _items = [];
   bool _showFavoriteOnly = false;
 
@@ -28,8 +30,11 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> loadProducts() async {
     _items.clear();
-    final response =
-        await http.get(Uri.parse('${AppConstants.kBaseUrl}.json?auth=$_token'));
+    final response = await http.get(
+      Uri.parse(
+        '${AppConstants.kBaseUrl}.json?auth=$_token',
+      ),
+    );
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach((productId, productData) {
@@ -66,7 +71,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse('${AppConstants.kBaseUrl}.json'),
+      Uri.parse('${AppConstants.kBaseUrl}.json?auth=$_token'),
       body: jsonEncode(
         {
           'name': product.name,
@@ -94,7 +99,7 @@ class ProductProvider with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-        Uri.parse('${AppConstants.kBaseUrl}/${product.id}.json'),
+        Uri.parse('${AppConstants.kBaseUrl}/${product.id}.json?auth=$_token'),
         body: jsonEncode(
           {
             'name': product.name,
@@ -120,7 +125,9 @@ class ProductProvider with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        Uri.parse('${AppConstants.kBaseUrl}/${product.id}.json'),
+        Uri.parse(
+          '${AppConstants.kBaseUrl}/${product.id}.json?auth=$_token',
+        ),
       );
 
       if (response.statusCode >= 400) {
