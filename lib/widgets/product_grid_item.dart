@@ -25,7 +25,10 @@ class ProductGridItem extends StatelessWidget {
               product.isFavorite ? Icons.favorite : Icons.favorite_border,
             ),
             color: Theme.of(context).colorScheme.secondary,
-            onPressed: () => product.toggleFavoriteInFirebase(auth.token ?? ''),
+            onPressed: () => product.toggleFavoriteInFirebase(
+              auth.token ?? '',
+              auth.userId ?? '',
+            ),
           ),
           trailing: IconButton(
             icon: const Icon(Icons.shopping_cart),

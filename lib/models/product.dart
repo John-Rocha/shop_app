@@ -26,13 +26,16 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteInFirebase(String token) async {
+  Future<void> toggleFavoriteInFirebase(
+    String token,
+    String userId,
+  ) async {
     _toggleFavorite();
-    final response = await http.patch(
+    final response = await http.put(
       Uri.parse(
-        '${AppConstants.kBaseUrl}/$id.json?auth=$token',
+        '${AppConstants.kUserFavorite}/$userId/$id.json?auth=$token',
       ),
-      body: jsonEncode({"isFavorite": isFavorite}),
+      body: jsonEncode(isFavorite),
     );
 
     if (response.statusCode >= 400) {
