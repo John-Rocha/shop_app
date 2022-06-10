@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/exceptions/auth_exception.dart';
@@ -16,9 +17,11 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _passwordEC = TextEditingController();
+  final _emailForgotPasswordEC = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.login;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   Map<String, String> _authData = {
     'email': '',
@@ -36,7 +39,7 @@ class _AuthFormState extends State<AuthForm> {
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
-        height: _isLogin() ? 310 : 400,
+        height: _isLogin() ? 330 : 400,
         width: deviceSize.width * 0.75,
         child: Form(
             key: _formKey,
@@ -111,9 +114,49 @@ class _AuthFormState extends State<AuthForm> {
                         ? 'Deseja Registrar?'.toUpperCase()
                         : 'Já possui conta?'.toUpperCase(),
                   ),
+                ),
+                TextButton(
+                  onPressed: () => _forgotPassword(context),
+                  child: const Text('Esqueceu sua senha?'),
                 )
               ],
             )),
+      ),
+    );
+  }
+
+  Future<void> _forgotPassword(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Informe o e-mail do cadastro'),
+        content: TextFormField(
+          controller: _emailForgotPasswordEC,
+          decoration: const InputDecoration(
+            labelText: 'E-mail',
+          ),
+          keyboardType: TextInputType.emailAddress,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('CANCELAR'),
+          ),
+          TextButton(
+            onPressed: () async {
+              try {
+                await firebaseAuth.sendPasswordResetEmail(
+                  email: _emailForgotPasswordEC.text.trim(),
+                );
+              } on FirebaseAuthException catch (e) {
+                print('O erro $e');
+              } finally {
+                Navigator.of(context).pop();
+              }
+            },
+            child: const Text('ENVIAR'),
+          )
+        ],
       ),
     );
   }
