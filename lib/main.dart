@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
           update: (context, auth, previous) {
             return OrderProvider(
               auth.token ?? '',
+              auth.userId ?? '',
               previous?.items ?? [],
             );
           },
