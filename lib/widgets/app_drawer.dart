@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth_provider.dart';
 import 'package:shop_app/utils/app_constants.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -48,8 +50,13 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Sair'),
             onTap: () {
+              Provider.of<AuthProvider>(
+                context,
+                listen: false,
+              ).logout();
+
               Navigator.of(context).pushReplacementNamed(
-                AppConstants.kAuth,
+                AppConstants.kAuthOrHome,
               );
             },
           ),
