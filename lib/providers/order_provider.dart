@@ -14,7 +14,10 @@ class OrderProvider with ChangeNotifier {
   final String _token;
   List<Order> _items = [];
 
-  OrderProvider(this._token, this._items);
+  OrderProvider([
+    this._token = '',
+    this._items = const [],
+  ]);
 
   List<Order> get items {
     return [..._items];

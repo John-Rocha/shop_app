@@ -94,7 +94,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: const Text('Ok'),
-              )
+              ),
             ],
           );
         },

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "837087280574",
+    "firebase_url": "https://shop-app-john-default-rtdb.firebaseio.com",
     "project_id": "shop-app-john",
     "storage_bucket": "shop-app-john.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "837087280574-aoh3o2krjg1sqq76n5kfao3vkm45c9mg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "837087280574-79lik5v9v985r06n9o7761mb4tvgh6of.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shopApp"
+              }
             }
           ]
         }

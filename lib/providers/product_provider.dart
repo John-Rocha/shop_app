@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, unused_field
 
 import 'dart:convert';
 import 'dart:math';
@@ -12,10 +12,15 @@ import 'package:shop_app/utils/app_constants.dart';
 
 class ProductProvider with ChangeNotifier {
   final String _token;
+  final String _userId;
   List<Product> _items = [];
   bool _showFavoriteOnly = false;
 
-  ProductProvider(this._token, this._items);
+  ProductProvider([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
 
   List<Product> get items {
     if (_showFavoriteOnly) {
@@ -36,8 +41,19 @@ class ProductProvider with ChangeNotifier {
       ),
     );
     if (response.body == 'null') return;
+
+    final favResponse = await http.get(
+      Uri.parse(
+        '${AppConstants.kUserFavorites}/$_userId.json?auth=$_token',
+      ),
+    );
+
+    Map<String, dynamic> favData =
+        favResponse.body == 'null' ? {} : jsonDecode(favResponse.body);
+
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach((productId, productData) {
+      final isFavorite = favData[productId] ?? false;
       _items.add(
         Product(
           id: productId,
@@ -45,6 +61,7 @@ class ProductProvider with ChangeNotifier {
           description: productData['description'],
           price: productData['price'],
           imageUrl: productData['imageUrl'],
+          isFavorite: isFavorite,
         ),
       );
     });

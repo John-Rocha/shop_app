@@ -43,6 +43,16 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Sair'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                AppConstants.kAuth,
+              );
+            },
+          ),
         ],
       ),
     );
