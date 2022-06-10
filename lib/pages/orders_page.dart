@@ -36,6 +36,10 @@ class OrdersPage extends StatelessWidget {
             return const Center(
               child: Text('Ocorreu um erro!'),
             );
+          } else if (!snapshot.hasData) {
+            return const Center(
+              child: Text('Não há pedidos!'),
+            );
           } else {
             return Consumer<OrderProvider>(
               builder: (context, orders, _) => RefreshIndicator(
