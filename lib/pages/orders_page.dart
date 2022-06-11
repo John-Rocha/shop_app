@@ -23,11 +23,8 @@ class OrdersPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const AppDrawer(),
       body: FutureBuilder(
-        future: Provider.of<OrderProvider>(
-          context,
-          listen: false,
-        ).loadOrders(),
-        builder: (context, AsyncSnapshot<Object?> snapshot) {
+        future: Provider.of<OrderProvider>(context, listen: false).loadOrders(),
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -35,10 +32,6 @@ class OrdersPage extends StatelessWidget {
           } else if (snapshot.error != null) {
             return const Center(
               child: Text('Ocorreu um erro!'),
-            );
-          } else if (!snapshot.hasData) {
-            return const Center(
-              child: Text('Não há pedidos!'),
             );
           } else {
             return Consumer<OrderProvider>(
