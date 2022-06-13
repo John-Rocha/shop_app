@@ -8,6 +8,7 @@ import 'package:shop_app/providers/order_provider.dart';
 import 'package:shop_app/providers/product_provider.dart';
 import 'package:shop_app/remote_config/custom_remote_config.dart';
 import 'package:shop_app/utils/app_constants.dart';
+import 'package:shop_app/utils/custom_route.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +58,12 @@ class MyApp extends StatelessWidget {
         title: 'Shop do John',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: CustomPageTransitionsBuilder(),
+              TargetPlatform.iOS: CustomPageTransitionsBuilder(),
+            },
+          ),
           primaryColor: Colors.purple,
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.purple,
